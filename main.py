@@ -3,19 +3,15 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
 from database import database
+from models.book import Book
 
 
 app = FastAPI()
 
 
-class Item(BaseModel):
-    name: str
-    price: float
-
-
 @app.post("/items/")
-async def create_item(item: Item):
-    collection = database.users1
+async def create_item(item: Book):
+    collection = database.books
     new_user = await collection.insert_one(item.dict())
     x = new_user.inserted_id
     return {"item_id": str(x)}
